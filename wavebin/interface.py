@@ -6,9 +6,11 @@ Waveform capture viewer for oscilloscopes.
 """
 
 from pathlib import Path
-from PyQt5 import QtWidgets as qt
-from PyQt5 import QtCore as qtc
-from PyQt5 import QtGui as qtg
+from PyQt6 import QtWidgets as qt
+from PyQt6 import QtCore as qtc
+from PyQt6 import QtGui as qtg
+from PyQt6.QtGui import QAction, QIcon, QKeySequence
+
 import webbrowser
 from wavebin.export import PulseView, WaveFile
 
@@ -106,17 +108,17 @@ class QtApp(qt.QApplication):
 
         # Menu actions
         self.menu_actions = {
-            "file_open":       qt.QAction("&Open...", self.window),
-            "file_export_pv":  qt.QAction("Export to &PulseView...", self.window),
-            "file_export_wav": qt.QAction("Export to &WAV file...", self.window),
+            "file_open":       QAction("&Open...", self.window),
+            "file_export_pv":  QAction("Export to &PulseView...", self.window),
+            "file_export_wav": QAction("Export to &WAV file...", self.window),
             "file_----":       None,
-            "file_exit":       qt.QAction("E&xit", self.window),
-            "view_sidebar":    qt.QAction("&Sidebar", self.window),
-            "view_wave_info":  qt.QAction("Waveform &Info", self.window),
-            "help_docs":       qt.QAction("&Documentation", self.window),
-            "help_shortcuts":  qt.QAction("&Keyboard Shortcuts", self.window),
+            "file_exit":       QAction("E&xit", self.window),
+            "view_sidebar":    QAction("&Sidebar", self.window),
+            "view_wave_info":  QAction("Waveform &Info", self.window),
+            "help_docs":       QAction("&Documentation", self.window),
+            "help_shortcuts":  QAction("&Keyboard Shortcuts", self.window),
             "help_----":       None,
-            "help_about":      qt.QAction("&About", self.window)
+            "help_about":      QAction("&About", self.window)
         }
 
         # Customise menu actions
@@ -375,10 +377,10 @@ class QtSidebar(qt.QTableWidget):
         self.setRowCount(0)
         self.verticalHeader().setVisible(False)
         self.horizontalHeader().setVisible(False)
-        self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
-        self.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
-        self.setFocusPolicy(qtc.Qt.NoFocus)
-        self.setSelectionMode(qt.QAbstractItemView.NoSelection)
+        self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.ResizeMode.Stretch)
+        self.setEditTriggers(qt.QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.setFocusPolicy(qtc.Qt.FocusPolicy.NoFocus)
+        self.setSelectionMode(qt.QAbstractItemView.SelectionMode.NoSelection)
         self.setStyleSheet(
             "border: none;"\
             "border-right: 1px solid #333;"\
