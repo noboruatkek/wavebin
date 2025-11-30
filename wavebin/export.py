@@ -123,23 +123,30 @@ class WaveFile():
         # Loop through waveforms
         for i, w in enumerate(self.waveforms):
             # Extend waveform below zero
-            w['data'][w['data'] == 0] = -1
+            # w['data'][w['data'] == 0] = -1
 
             # Append waveform number to file name
-            file_path = str(self.path).replace(self.path.suffix, f"_{i}{self.path.suffix}")
-
+            #file_path = str(self.path).replace(self.path.suffix, f"_{i}{self.path.suffix}")
+            file_path = self.path.with_stem(f"{self.path.stem}_{i+1}").absolute()
+            
             # Create WAV file
-            self.wavf = wave.open(file_path, mode='wb')
-            self.wavf.setnchannels(1)                       # Number of channels
-            self.wavf.setsampwidth(2)                       # Bytes per sample
-            self.wavf.setframerate(self.get_sample_rate(i)) # Sample rate
-            self.wavf.setnframes(len(w['data']))            # Number of samples
-
-            # Write samples to WAV file
-            self.wavf.writeframes(w['data'].astype(numpy.float16))
-
-            # Close WAV file
-            self.wavf.close()
+            with file_path.open(mode="wb") as wf:
+                self.wavf = wave.open(wf)
+                self.wavf.setnchannels(1)                       # Number of channels
+                self.wavf.setsampwidth(2)                       # Bytes per sample
+                self.wavf.setframerate(self.get_sample_rate(i)) # Sample rate
+                self.wavf.setnframes(len(w['data']))            # Number of samples
+                
+                # Write samples to WAV file
+                y = w['data'].astype(numpy.float16)
+                
+                y /=numpy.abs(y).max()
+                y *=numpy.iinfo(numpy.int16).max
+            
+                self.wavf.writeframes(y.astype(numpy.int16))
+                
+                # Close WAV file
+                self.wavf.close()
 
         #TODO: Fix analog waveform exporting
         #TODO: Add max (ulong) data rate check
