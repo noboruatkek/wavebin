@@ -80,16 +80,17 @@ class QtPlot(PlotWidget):
                 self.log(f"  Clipping")
 
                 # Find waveform median
-                med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
-
+                #med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
+                
                 # Shift waveform to be centered around zero
-                y = (y - med) + 0
-
+                y -= y.mean()
+                
                 # Apply threshold to waveform values
-                y[y > 0] = 1
-                y[y < 0] = 0
-
-
+                # y[y > 3] = 3
+                # y[y < -3] = -3
+                # y /= (6*y.std())
+                y=y.clip(-1,1)
+                    
             # Make processed waveforms available for exporting
             self.processed_waveforms.append({
                 "header": w['header'],
