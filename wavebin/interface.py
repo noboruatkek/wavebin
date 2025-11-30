@@ -57,8 +57,7 @@ class QtApp(qt.QApplication):
     def run(self):
         self.log("Starting Qt application")
         self.window.show()
-        self.exec_()
-
+        self.exec()
 
     def update(self):
         self.log("Updating UI")
@@ -192,7 +191,7 @@ class QtApp(qt.QApplication):
             msgbox.setText(
                 f"Error opening \"{Path(file_path).name}\": Unknown file format"
             )
-            msgbox.exec_()
+            msgbox.exec()
 
 
     def menu_file_export_pv(self):
@@ -219,15 +218,15 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_export_wav(self):
-        # Check waveform has been clipped
-        if not self.sidebar.config['parts'][1]['widget'].isChecked():
-            msgbox = qt.QMessageBox()
-            msgbox.setWindowTitle("Error")
-            msgbox.setIcon(qt.QMessageBox.Critical)
-            msgbox.setStandardButtons(qt.QMessageBox.Ok)
-            msgbox.setText("Enable waveform clipping before exporting to WAV file")
-            msgbox.exec_()
-            return
+        # # Check waveform has been clipped
+        # if not self.sidebar.config['parts'][1]['widget'].isChecked():
+        #     msgbox = qt.QMessageBox()
+        #     msgbox.setWindowTitle("Error")
+        #     msgbox.setIcon(qt.QMessageBox.Critical)
+        #     msgbox.setStandardButtons(qt.QMessageBox.Ok)
+        #     msgbox.setText("Enable waveform clipping before exporting to WAV file")
+        #     msgbox.exec()
+        #     return
 
         # Show save file dialog
         file_path = self.sfd.getSaveFileName(
@@ -324,7 +323,7 @@ class QtApp(qt.QApplication):
         msgbox.setStandardButtons(qt.QMessageBox.Ok)
         msgbox.setText(info)
         self.log("Waveform info dialog launched")
-        msgbox.exec_()
+        msgbox.exec()
 
 
     def menu_help_docs(self):
@@ -342,7 +341,7 @@ class QtApp(qt.QApplication):
             ""
         )
         self.log("Keyboard shortcut dialog launched")
-        msgbox.exec_()
+        msgbox.exec()
 
 
     def menu_help_about(self):
@@ -355,7 +354,7 @@ class QtApp(qt.QApplication):
             "Update wavebin by running \"pip install wavebin --upgrade\""
         )
         self.log("About dialog launched")
-        msgbox.exec_()
+        msgbox.exec()
 
 
     def add_plot(self, plot):
@@ -377,9 +376,14 @@ class QtSidebar(qt.QTableWidget):
         self.setRowCount(0)
         self.verticalHeader().setVisible(False)
         self.horizontalHeader().setVisible(False)
+        #self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
         self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.ResizeMode.Stretch)
+        
+        #self.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
         self.setEditTriggers(qt.QAbstractItemView.EditTrigger.NoEditTriggers)
+        #self.setFocusPolicy(qtc.Qt.NoFocus)
         self.setFocusPolicy(qtc.Qt.FocusPolicy.NoFocus)
+        #self.setSelectionMode(qt.QAbstractItemView.NoSelection)
         self.setSelectionMode(qt.QAbstractItemView.SelectionMode.NoSelection)
         self.setStyleSheet(
             "border: none;"\
