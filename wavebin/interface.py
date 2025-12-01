@@ -1,3 +1,4 @@
+#!python3
 """
 wavebin
 https://github.com/sam210723/wavebin
@@ -6,14 +7,28 @@ Waveform capture viewer for oscilloscopes.
 """
 
 from pathlib import Path
-from PyQt6 import QtWidgets as qt
-from PyQt6 import QtCore as qtc
-from PyQt6 import QtGui as qtg
-from PyQt6.QtGui import QAction, QIcon, QKeySequence
+
+try:
+    from PySide6 import QtWidgets as qt
+    from PySide6 import QtCore as qtc
+    from PySide6 import QtGui as qtg
+    from PySide6.QtGui import QAction
+except ModuleNotFoundError as em:
+    try:
+        from PyQt6 import QtWidgets as qt
+        from PyQt6 import QtCore as qtc
+        from PyQt6 import QtGui as qtg
+        from PyQt6.QtGui import QAction
+    except ModuleNotFoundError as em:
+        from PyQt5 import QtWidgets as qt
+        from PyQt5 import QtCore as qtc
+        from PyQt5 import QtGui as qtg
+        from PyQt5.QtWidgets import QAction
+
+print(qt)
 
 import webbrowser
-from wavebin.export import PulseView, WaveFile
-
+from .export import PulseView, WaveFile
 
 class QtApp(qt.QApplication):
     def __init__(self, config):
