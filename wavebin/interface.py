@@ -25,8 +25,6 @@ except ModuleNotFoundError as em:
         from PyQt5 import QtGui as qtg
         from PyQt5.QtWidgets import QAction
 
-print(qt)
-
 import webbrowser
 from .export import PulseView, WaveFile
 
